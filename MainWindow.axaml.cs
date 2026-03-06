@@ -10,36 +10,26 @@ namespace PeacefulSudoku;
 
 public partial class MainWindow : Window
 {
-    // ── Cell grid ───────────────────────────────────────────────────────────
-    // We store all 81 cell borders in a flat array.
-    // Index formula: row * 9 + col  →  e.g. row=2, col=5 → index 23
+    // Cell grid
     private readonly Border[] _cells = new Border[81];
-
-    // ── State you will fill in ──────────────────────────────────────────────
     private int _selectedIndex = -1;   // which cell is currently selected (-1 = none)
     private bool _notesMode    = false; // is notes mode on?
 
-    // TODO: you will add the puzzle arrays here in Step 2
+    private int[,] _puzzle   = new int[9, 9];
+    private int[,] _solution = new int[9, 9];
+    private bool[,] _given   = new bool[9, 9];
+    private Difficulty _difficulty = Difficulty.Medium;
 
     public MainWindow()
     {
         InitializeComponent();
         SetupKeyboard();
 
-        // The XAML controls (like BoardGrid) only exist after the window
-        // is fully rendered for the first time. Opened fires at that point.
         Opened += (_, _) => BuildBoard();
     }
 
-    // Shorthand: walk the full resource tree (window → app → styles)
-    // this.Resources["key"] only checks the window itself and misses
-    // anything declared in Assets/Styles.axaml which lives at app level.
     private IBrush R(string key) => (IBrush)this.FindResource(key)!;
 
-    // ────────────────────────────────────────────────────────────────────────
-    // BOARD CONSTRUCTION
-    // Creates 81 Border controls and places them in the 9×9 UniformGrid.
-    // ────────────────────────────────────────────────────────────────────────
     private void BuildBoard()
     {
         for (int row = 0; row < 9; row++)
@@ -88,9 +78,6 @@ public partial class MainWindow : Window
         return new Thickness(left, top, right, bottom);
     }
 
-    // ────────────────────────────────────────────────────────────────────────
-    // KEYBOARD HANDLING
-    // ────────────────────────────────────────────────────────────────────────
     private void SetupKeyboard()
     {
         KeyDown += OnKeyDown;
@@ -101,10 +88,7 @@ public partial class MainWindow : Window
         // TODO Step 3: handle arrow keys, number keys, delete, 'n'
     }
 
-    // ────────────────────────────────────────────────────────────────────────
-    // EVENT HANDLERS
-    // ────────────────────────────────────────────────────────────────────────
-
+    // Event Handlers
     private void Cell_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
         if (sender is Border cell && cell.Tag is int index)
@@ -133,17 +117,32 @@ public partial class MainWindow : Window
 
     private void NewGame_Click(object? sender, RoutedEventArgs e)
     {
-        // TODO Step 2: call your StartNewGame() method
+        StartNewGame();
     }
 
     private void Difficulty_Click(object? sender, RoutedEventArgs e)
     {
-        // TODO Step 2: read which button was clicked, update difficulty
+        if (sender is not Button clicked) return;
+
+        // remove "active" from all four pills, add it to the clicked one
+        BtnEasy.Classes.Remove("active");
+        BtnMedium.Classes.Remove("active");
+        BtnHard.Classes.Remove("active");
+        BtnExpert.Classes.Remove("active");
+        clicked.Classes.Add("active");
+
+        _difficulty = clicked.Name switch
+        {
+            "BtnEasy"   => Difficulty.Easy,
+            "BtnMedium" => Difficulty.Medium,
+            "BtnHard"   => Difficulty.Hard,
+            "BtnExpert" => Difficulty.Expert,
+            _           => Difficulty.Medium
+        };
+
     }
 
-    // ────────────────────────────────────────────────────────────────────────
-    // CELL SELECTION  –  highlights the selected cell + its row/col/box
-    // ────────────────────────────────────────────────────────────────────────
+    //highlight the selected cell, its row, column and box
     private void SelectCell(int index)
     {
         _selectedIndex = index;
@@ -176,5 +175,37 @@ public partial class MainWindow : Window
             if (cell.Child is TextBlock tb)
                 tb.Foreground = isSelected ? R("B.TextOnSel") : R("B.TextGiven");
         }
+    }
+
+    private void StartNewGame()
+    {
+        var (puzzle, solution) = SudokuGenerator.Generate(_difficulty);
+        LoadPuzzle(puzzle, solution);
+    }
+
+    private void LoadPuzzle(int[,] puzzle, int[,] solution)
+    {
+        _solution = solution;
+        _selectedIndex = -1;
+
+        for (int row = 0; row < 9; row++)
+            for (int col = 0; col < 9; col++)
+            {
+                int index = row * 9 + col;
+                int value = puzzle[row, col];
+
+                _puzzle[row, col] = value;
+                _given[row, col]  = value != 0;
+
+                var cell = _cells[index];
+                cell.Background = R("B.Cell");
+
+                if (cell.Child is TextBlock tb)
+                {
+                    tb.Text       = value == 0 ? "" : value.ToString();
+                    tb.Foreground = R("B.TextGiven");
+                    tb.FontWeight = value != 0 ? FontWeight.SemiBold : FontWeight.Medium;
+                }
+            }
     }
 }
