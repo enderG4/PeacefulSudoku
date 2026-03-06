@@ -1,9 +1,155 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="PeacefulSudoku.MainWindow"
-        Title="PeacefulSudoku">
-    Welcome to Avalonia!
+        Title="Sudoku"
+        Width="754" Height="620"
+        MinWidth="754" MinHeight="620"
+        CanResize="False"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource B.Bg}">
+
+    <!-- Root layout: header + content -->
+    <DockPanel>
+
+        <!-- ── Header ── -->
+        <Border DockPanel.Dock="Top"
+                Background="{StaticResource B.Surface}"
+                Padding="28,0"
+                Height="52">
+            <Grid ColumnDefinitions="*,Auto">
+
+                <!-- Left: title + difficulty pills -->
+                <StackPanel Orientation="Horizontal" Spacing="20" VerticalAlignment="Center">
+                    <TextBlock Text="sudoku"
+                               FontSize="13" FontWeight="SemiBold"
+                               Foreground="{StaticResource B.TextGiven}"
+                               LetterSpacing="3" VerticalAlignment="Center"/>
+
+                    <!-- Difficulty pills -->
+                    <StackPanel Orientation="Horizontal" Spacing="4">
+                        <Button x:Name="BtnEasy"   Classes="diff active" Content="easy"   Click="Difficulty_Click"/>
+                        <Button x:Name="BtnMedium" Classes="diff"        Content="medium" Click="Difficulty_Click"/>
+                        <Button x:Name="BtnHard"   Classes="diff"        Content="hard"   Click="Difficulty_Click"/>
+                        <Button x:Name="BtnExpert" Classes="diff"        Content="expert" Click="Difficulty_Click"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- Right: timer + mistake dots -->
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="20"
+                            VerticalAlignment="Center">
+
+                    <!-- Mistake indicator: 3 dots -->
+                    <StackPanel Orientation="Horizontal" Spacing="5" VerticalAlignment="Center">
+                        <Ellipse x:Name="Dot1" Width="7" Height="7" Fill="{StaticResource B.TextMuted}"/>
+                        <Ellipse x:Name="Dot2" Width="7" Height="7" Fill="{StaticResource B.TextMuted}"/>
+                        <Ellipse x:Name="Dot3" Width="7" Height="7" Fill="{StaticResource B.TextMuted}"/>
+                    </StackPanel>
+
+                    <!-- Timer -->
+                    <TextBlock x:Name="TimerLabel"
+                               Text="00:00"
+                               FontSize="13" FontWeight="Medium"
+                               Foreground="{StaticResource B.TextDim}"
+                               FontFamily="Consolas,monospace"
+                               VerticalAlignment="Center"/>
+                </StackPanel>
+
+            </Grid>
+        </Border>
+
+        <!-- ── Main content ── -->
+        <Grid Margin="28,24,28,28" ColumnDefinitions="Auto,28,160">
+
+            <!-- ── Board ── -->
+            <!-- The 9x9 cell buttons are created in MainWindow.axaml.cs -->
+            <Border Grid.Column="0"
+                    Background="{StaticResource B.Surface}"
+                    CornerRadius="14"
+                    Padding="3"
+                    Width="510" Height="510">
+                <UniformGrid x:Name="BoardGrid" Rows="9" Columns="9"/>
+            </Border>
+
+            <!-- ── Right panel ── -->
+            <StackPanel Grid.Column="2" Spacing="0">
+
+                <!-- Number pad -->
+                <TextBlock Text="NUMBER"
+                           FontSize="9" FontWeight="SemiBold"
+                           Foreground="{StaticResource B.TextMuted}"
+                           LetterSpacing="2" Margin="0,0,0,10"/>
+
+                <UniformGrid Rows="3" Columns="3" Width="156">
+                    <Button Classes="num" Content="1" Margin="3" Click="NumPad_Click" Tag="1"/>
+                    <Button Classes="num" Content="2" Margin="3" Click="NumPad_Click" Tag="2"/>
+                    <Button Classes="num" Content="3" Margin="3" Click="NumPad_Click" Tag="3"/>
+                    <Button Classes="num" Content="4" Margin="3" Click="NumPad_Click" Tag="4"/>
+                    <Button Classes="num" Content="5" Margin="3" Click="NumPad_Click" Tag="5"/>
+                    <Button Classes="num" Content="6" Margin="3" Click="NumPad_Click" Tag="6"/>
+                    <Button Classes="num" Content="7" Margin="3" Click="NumPad_Click" Tag="7"/>
+                    <Button Classes="num" Content="8" Margin="3" Click="NumPad_Click" Tag="8"/>
+                    <Button Classes="num" Content="9" Margin="3" Click="NumPad_Click" Tag="9"/>
+                </UniformGrid>
+
+                <!-- Divider -->
+                <Border Height="1" Background="{StaticResource B.Border}" Margin="3,20"/>
+
+                <!-- Tools -->
+                <TextBlock Text="TOOLS"
+                           FontSize="9" FontWeight="SemiBold"
+                           Foreground="{StaticResource B.TextMuted}"
+                           LetterSpacing="2" Margin="0,0,0,10"/>
+
+                <StackPanel Spacing="6">
+                    <Button x:Name="BtnNotes" Classes="act"
+                            HorizontalAlignment="Stretch"
+                            Click="Notes_Click">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <TextBlock Text="✎" FontSize="13"/>
+                            <TextBlock Text="notes" FontSize="12" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button Classes="act" HorizontalAlignment="Stretch" Click="Erase_Click">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <TextBlock Text="⌫" FontSize="13"/>
+                            <TextBlock Text="erase" FontSize="12" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+
+                <!-- Divider -->
+                <Border Height="1" Background="{StaticResource B.Border}" Margin="3,20"/>
+
+                <!-- New game -->
+                <Button Classes="new" HorizontalAlignment="Stretch" Click="NewGame_Click">
+                    new game
+                </Button>
+
+                <!-- Spacer -->
+                <Border Height="1" Background="Transparent" Margin="0,20"/>
+
+                <!-- Keyboard hint -->
+                <StackPanel Spacing="5">
+                    <TextBlock Text="KEYBOARD"
+                               FontSize="9" FontWeight="SemiBold"
+                               Foreground="{StaticResource B.TextMuted}"
+                               LetterSpacing="2" Margin="0,0,0,6"/>
+                    <TextBlock Text="1–9   enter number"  FontSize="10" Foreground="{StaticResource B.TextMuted}"/>
+                    <TextBlock Text="del   erase"         FontSize="10" Foreground="{StaticResource B.TextMuted}"/>
+                    <TextBlock Text="↑↓←→  navigate"      FontSize="10" Foreground="{StaticResource B.TextMuted}"/>
+                    <TextBlock Text="n     toggle notes"  FontSize="10" Foreground="{StaticResource B.TextMuted}"/>
+                </StackPanel>
+
+            </StackPanel>
+        </Grid>
+    </DockPanel>
+
+    <!-- Win overlay -->
+    <Window.Styles>
+        <Style Selector="Border.win-overlay">
+            <Setter Property="IsVisible" Value="False"/>
+        </Style>
+    </Window.Styles>
+
 </Window>

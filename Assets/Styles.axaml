@@ -1,0 +1,130 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Style>
+        <Style.Resources>
+            <!-- ── Palette: charcoal grays + green accent ── -->
+            <Color x:Key="C.Bg">#0E0E0E</Color>
+            <Color x:Key="C.Surface">#161616</Color>
+            <Color x:Key="C.Cell">#1A1A1A</Color>
+            <Color x:Key="C.Selected">#4ADE80</Color>
+            <Color x:Key="C.Highlight">#1F1F1F</Color>
+            <Color x:Key="C.SameNum">#212121</Color>
+            <Color x:Key="C.Border">#2E2E2E</Color>
+            <Color x:Key="C.BoxBorder">#4A4A4A</Color>
+
+            <Color x:Key="C.TextGiven">#E8E8E8</Color>
+            <Color x:Key="C.TextPlayer">#4ADE80</Color>
+            <Color x:Key="C.TextOnSelected">#0E0E0E</Color>
+            <Color x:Key="C.TextError">#F87171</Color>
+            <Color x:Key="C.TextNote">#3A5A3A</Color>
+            <Color x:Key="C.TextMuted">#404040</Color>
+            <Color x:Key="C.TextDim">#666666</Color>
+            <Color x:Key="C.Accent">#4ADE80</Color>
+
+            <!-- ── Brushes ── -->
+            <SolidColorBrush x:Key="B.Bg"         Color="{StaticResource C.Bg}" />
+            <SolidColorBrush x:Key="B.Surface"    Color="{StaticResource C.Surface}" />
+            <SolidColorBrush x:Key="B.Cell"       Color="{StaticResource C.Cell}" />
+            <SolidColorBrush x:Key="B.Selected"   Color="{StaticResource C.Selected}" />
+            <SolidColorBrush x:Key="B.Highlight"  Color="{StaticResource C.Highlight}" />
+            <SolidColorBrush x:Key="B.SameNum"    Color="{StaticResource C.SameNum}" />
+            <SolidColorBrush x:Key="B.Border"     Color="{StaticResource C.Border}" />
+            <SolidColorBrush x:Key="B.BoxBorder"  Color="{StaticResource C.BoxBorder}" />
+            <SolidColorBrush x:Key="B.TextGiven"  Color="{StaticResource C.TextGiven}" />
+            <SolidColorBrush x:Key="B.TextPlayer" Color="{StaticResource C.TextPlayer}" />
+            <SolidColorBrush x:Key="B.TextOnSel"  Color="{StaticResource C.TextOnSelected}" />
+            <SolidColorBrush x:Key="B.TextError"  Color="{StaticResource C.TextError}" />
+            <SolidColorBrush x:Key="B.TextNote"   Color="{StaticResource C.TextNote}" />
+            <SolidColorBrush x:Key="B.TextMuted"  Color="{StaticResource C.TextMuted}" />
+            <SolidColorBrush x:Key="B.TextDim"    Color="{StaticResource C.TextDim}" />
+            <SolidColorBrush x:Key="B.Accent"     Color="{StaticResource C.Accent}" />
+        </Style.Resources>
+    </Style>
+
+    <!-- Kill Fluent's default button padding and center all content -->
+    <Style Selector="Button">
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment"   Value="Center" />
+        <Setter Property="Padding"                    Value="0" />
+    </Style>
+    <Style Selector="Button /template/ ContentPresenter">
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment"   Value="Center" />
+        <Setter Property="Padding"                    Value="0" />
+    </Style>
+
+    <!-- ── Number-pad ── -->
+    <Style Selector="Button.num">
+        <Setter Property="Width"           Value="48" />
+        <Setter Property="Height"          Value="48" />
+        <Setter Property="Background"      Value="{StaticResource B.Surface}" />
+        <Setter Property="Foreground"      Value="{StaticResource B.TextGiven}" />
+        <Setter Property="FontSize"        Value="20" />
+        <Setter Property="FontWeight"      Value="Medium" />
+        <Setter Property="CornerRadius"    Value="8" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Cursor"          Value="Hand" />
+    </Style>
+    <Style Selector="Button.num:pointerover /template/ ContentPresenter">
+        <Setter Property="Background" Value="#222222" />
+    </Style>
+    <Style Selector="Button.num:pressed /template/ ContentPresenter">
+        <Setter Property="Background" Value="#2D2D2D" />
+    </Style>
+
+    <!-- ── Action (Erase, Notes) ── -->
+    <Style Selector="Button.act">
+        <Setter Property="Background"      Value="{StaticResource B.Surface}" />
+        <Setter Property="Foreground"      Value="{StaticResource B.TextDim}" />
+        <Setter Property="FontSize"        Value="12" />
+        <Setter Property="FontWeight"      Value="Medium" />
+        <Setter Property="Height"          Value="36" />
+        <Setter Property="CornerRadius"    Value="8" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Cursor"          Value="Hand" />
+    </Style>
+    <Style Selector="Button.act:pointerover /template/ ContentPresenter">
+        <Setter Property="Background" Value="#1E1E1E" />
+    </Style>
+    <Style Selector="Button.act.on">
+        <Setter Property="Background" Value="#162516" />
+        <Setter Property="Foreground" Value="{StaticResource B.Accent}" />
+    </Style>
+
+    <!-- ── New game ── -->
+    <Style Selector="Button.new">
+        <Setter Property="Background"      Value="#162516" />
+        <Setter Property="Foreground"      Value="{StaticResource B.Accent}" />
+        <Setter Property="FontSize"        Value="12" />
+        <Setter Property="FontWeight"      Value="SemiBold" />
+        <Setter Property="Height"          Value="36" />
+        <Setter Property="CornerRadius"    Value="8" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Cursor"          Value="Hand" />
+    </Style>
+    <Style Selector="Button.new:pointerover /template/ ContentPresenter">
+        <Setter Property="Background" Value="#1C301C" />
+    </Style>
+
+    <!-- ── Difficulty pills ── -->
+    <Style Selector="Button.diff">
+        <Setter Property="Background"      Value="Transparent" />
+        <Setter Property="Foreground"      Value="{StaticResource B.TextMuted}" />
+        <Setter Property="FontSize"        Value="11" />
+        <Setter Property="FontWeight"      Value="Medium" />
+        <Setter Property="Height"          Value="28" />
+        <Setter Property="CornerRadius"    Value="6" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Cursor"          Value="Hand" />
+        <Setter Property="Padding"         Value="12,0" />
+    </Style>
+    <Style Selector="Button.diff:pointerover /template/ ContentPresenter">
+        <Setter Property="Background" Value="#1E1E1E" />
+    </Style>
+    <Style Selector="Button.diff.active">
+        <Setter Property="Background" Value="#162516" />
+        <Setter Property="Foreground" Value="{StaticResource B.Accent}" />
+    </Style>
+
+</Styles>
