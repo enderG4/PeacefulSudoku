@@ -17,7 +17,7 @@
             <Color x:Key="C.TextPlayer">#888888</Color>
             <Color x:Key="C.TextOnSelected">#0E0E0E</Color>
             <Color x:Key="C.TextError">#F87171</Color>
-            <Color x:Key="C.TextNote">#3A5A3A</Color>
+            <Color x:Key="C.TextNote">#6BAF6B</Color>
             <Color x:Key="C.TextMuted">#404040</Color>
             <Color x:Key="C.TextDim">#666666</Color>
             <Color x:Key="C.Accent">#4ADE80</Color>

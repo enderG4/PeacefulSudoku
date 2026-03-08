@@ -1,7 +1,7 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         x:Class="PeacefulSudoku.MainWindow"
-        Title="Sudoku"
+        Title="Peaceful Sudoku"
         Width="754" Height="620"
         MinWidth="754" MinHeight="620"
         CanResize="False"
@@ -20,10 +20,10 @@
 
                 <!-- Left: title + difficulty pills -->
                 <StackPanel Orientation="Horizontal" Spacing="20" VerticalAlignment="Center">
-                    <TextBlock Text="sudoku"
-                               FontSize="13" FontWeight="SemiBold"
-                               Foreground="{StaticResource B.TextGiven}"
-                               LetterSpacing="3" VerticalAlignment="Center"/>
+                    <TextBlock Text="peaceful sudoku"
+                        FontSize="13" FontWeight="SemiBold"
+                        Foreground="{StaticResource B.TextGiven}"
+                        LetterSpacing="3" VerticalAlignment="Center"/>
 
                     <!-- Difficulty pills -->
                     <StackPanel Orientation="Horizontal" Spacing="4">
