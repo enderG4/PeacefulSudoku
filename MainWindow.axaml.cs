@@ -85,7 +85,22 @@ public partial class MainWindow : Window
 
     private void OnKeyDown(object? sender, KeyEventArgs e)
     {
-        // TODO Step 3: handle arrow keys, number keys, delete, 'n'
+        int num = e.Key switch
+        {
+            Key.D1 or Key.NumPad1    => 1,
+            Key.D2 or Key.NumPad2    => 2,
+            Key.D3 or Key.NumPad3    => 3,
+            Key.D4 or Key.NumPad4    => 4,
+            Key.D5 or Key.NumPad5    => 5,
+            Key.D6 or Key.NumPad6    => 6,
+            Key.D7 or Key.NumPad7    => 7,
+            Key.D8 or Key.NumPad8    => 8,
+            Key.D9 or Key.NumPad9    => 9,
+            Key.Delete or Key.Back   => 0,
+            _                        => -1   // anything else → ignore
+        };
+
+        if (num >= 0) EnterNumber(num);
     }
 
     // Event Handlers
@@ -98,14 +113,12 @@ public partial class MainWindow : Window
     private void NumPad_Click(object? sender, RoutedEventArgs e)
     {
         if (sender is Button btn && btn.Tag is string tag && int.TryParse(tag, out int number))
-        {
-            // TODO Step 3: call your EnterNumber(number) method
-        }
+            EnterNumber(number);
     }
 
     private void Erase_Click(object? sender, RoutedEventArgs e)
     {
-        // TODO Step 3: call your EraseCell() method
+        EnterNumber(0);
     }
 
     private void Notes_Click(object? sender, RoutedEventArgs e)
@@ -170,10 +183,19 @@ public partial class MainWindow : Window
 
             cell.Background = isSelected              ? R("B.Selected")  :
                               sameRow || sameCol || sameBox ? R("B.Highlight") :
-                                                              R("B.Cell");
+                                                              R("B.Cell"); 
 
             if (cell.Child is TextBlock tb)
-                tb.Foreground = isSelected ? R("B.TextOnSel") : R("B.TextGiven");
+            {
+                if (isSelected)
+                    tb.Foreground = R("B.TextOnSel");
+                else if (_given[row, col])
+                    tb.Foreground = R("B.TextGiven");
+                else if (_puzzle[row, col] != 0 && _puzzle[row, col] != _solution[row, col])
+                    tb.Foreground = R("B.TextError");
+                else
+                    tb.Foreground = R("B.TextPlayer");
+            }
         }
     }
 
@@ -207,5 +229,26 @@ public partial class MainWindow : Window
                     tb.FontWeight = value != 0 ? FontWeight.SemiBold : FontWeight.Medium;
                 }
             }
+    }
+
+    private void EnterNumber(int number)
+    {
+        if (_selectedIndex < 0) return;           // no cell selected, do nothing
+
+        int row = _selectedIndex / 9;
+        int col = _selectedIndex % 9;
+
+        if (_given[row, col]) return;             // can't overwrite a given digit
+
+        _puzzle[row, col] = number;
+
+        var cell = _cells[_selectedIndex];
+        if (cell.Child is TextBlock tb)
+        {
+            tb.Text       = number == 0 ? "" : number.ToString();
+            tb.Foreground = _solution[row, col] == number ? R("B.TextPlayer") : R("B.TextError");
+        }
+
+        UpdateHighlights();
     }
 }

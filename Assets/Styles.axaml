@@ -14,7 +14,7 @@
             <Color x:Key="C.BoxBorder">#4A4A4A</Color>
 
             <Color x:Key="C.TextGiven">#E8E8E8</Color>
-            <Color x:Key="C.TextPlayer">#4ADE80</Color>
+            <Color x:Key="C.TextPlayer">#888888</Color>
             <Color x:Key="C.TextOnSelected">#0E0E0E</Color>
             <Color x:Key="C.TextError">#F87171</Color>
             <Color x:Key="C.TextNote">#3A5A3A</Color>
