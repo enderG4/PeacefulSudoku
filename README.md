@@ -2,7 +2,7 @@
 
 A minimalist sudoku game built with Avalonia and .NET 10. Runs on Linux and Windows.
 
-![screenshot](Assets/screenshot.png)
+![screenshot](Assets/showcase.png)
 
 ---
 
